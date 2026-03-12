@@ -1,0 +1,2 @@
+install:
+  - ./gradlew :lib:publishToMavenLocal

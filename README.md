@@ -1,36 +1,37 @@
-# mod-base
+# modbase
 
-Forge 1.20.1 mod template. Handles registries, config, networking, and datagen so you can focus on content.
+Forge 1.20.1 library that handles registries, config, networking, datagen, block entities, and menus so you can focus on content.
 
-## Setup
+## Using as a dependency
 
-1. Generate a repo from this template (or fork it)
-2. Edit `gradle.properties` — set your mod ID, name, group, version
-3. Rename the `com.example.mymod` package to your own
-4. Update the `@Mod` annotation and `MOD_ID` in your main class
+Add JitPack and modbase to your `build.gradle`:
 
-## Syncing template updates
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
-Add the template as a remote:
-
-```
-git remote add template https://github.com/TheFuturisticIdiot/mod-base.git
-```
-
-Pull updates when needed:
-
-```
-git fetch template
-git merge template/main --allow-unrelated-histories
+dependencies {
+    implementation 'com.github.TheFuturisticIdiot:modbase:1.0.0'
+}
 ```
 
-Resolve any conflicts in your mod-specific files (gradle.properties, your package, etc). The base package should merge cleanly.
+## Getting started
 
-## Structure
+Check the `example/` folder for a working mod that uses every feature. You can copy it as a starting point for your own mod — just edit `gradle.properties` and rename the package.
 
-- `net.futuristicidiot.modbase` — base package, don't edit
-- Your package — all your mod code goes here
+## What it handles
 
-## Usage
+- **Registries** — items, blocks, block entities, menus, sounds, creative tabs, packets
+- **Config** — client and server configs with bool, int, string entries
+- **Networking** — auto-serialised packets, no FriendlyByteBuf needed
+- **Datagen** — item models, block states, recipes, loot tables, lang files (en_us auto-generated)
+- **Block entities** — base class with inventory, capabilities, save/load, client sync, drops
+- **Menus/Screens** — base menu with auto shift-click, slot grid helpers, generic screen fallback
 
-See the example files in `com.example.mymod` for how to use each system. Each file has comments showing available options.
+Your mod class extends `ModBase`, lists your classes in `use()`, and the library handles everything else.
+
+## Repo structure
+
+- `lib/` — the library source (published to JitPack)
+- `example/` — a working example mod (not published, use as reference or template)
