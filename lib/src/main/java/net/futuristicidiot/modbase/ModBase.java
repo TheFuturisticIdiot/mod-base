@@ -10,7 +10,6 @@ import net.futuristicidiot.modbase.registry.packet.PacketRegistry;
 import net.futuristicidiot.modbase.registry.sound.SoundRegistry;
 import net.futuristicidiot.modbase.registry.tab.TabRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -46,21 +45,29 @@ public abstract class ModBase {
             LOGGER.info("[ModBase] Registered config: {}", configClass.getSimpleName());
         }
 
-        datagen();
+        // Only load datagen classes if MC's DataProvider is available on this classpath.
+        // On minecraft_classpath (template dev), datagen MC classes aren't visible,
+        // so we skip entirely - datagen only runs via runData which has full MC classes.
+        boolean datagenAvailable = false;
+        try {
+            Class.forName("net.minecraft.data.DataProvider", false, getClass().getClassLoader());
+            datagenAvailable = true;
+        } catch (ClassNotFoundException ignored) {
+            LOGGER.debug("[ModBase] Datagen classes not available on this classpath, skipping datagen registration");
+        }
 
-        // Register datagen handler - DatagenHandler is loaded via reflection so its
-        // datagen-only imports don't get resolved at runtime
-        final String id = modId;
-        final List<Class<?>> classes = new ArrayList<>(datagenClasses);
-        modBus.addListener((GatherDataEvent event) -> {
+        if (datagenAvailable) {
+            datagen();
+            final String id = modId;
+            final List<Class<?>> classes = new ArrayList<>(datagenClasses);
             try {
                 Class<?> handler = Class.forName("net.futuristicidiot.modbase.internal.DatagenHandler");
-                handler.getMethod("handle", GatherDataEvent.class, String.class, List.class)
-                        .invoke(null, event, id, classes);
+                handler.getMethod("registerListener", IEventBus.class, String.class, List.class)
+                        .invoke(null, modBus, id, classes);
             } catch (Exception e) {
-                throw new RuntimeException("Failed to run datagen handler", e);
+                throw new RuntimeException("Failed to register datagen handler", e);
             }
-        });
+        }
 
         MinecraftForge.EVENT_BUS.register(this);
         LOGGER.info("[ModBase] Init complete for: {}", modId);

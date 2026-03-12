@@ -8,6 +8,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 
+import net.minecraftforge.eventbus.api.IEventBus;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +17,17 @@ import java.util.List;
 /**
  * Handles datagen in a separate class so that datagen-only classes
  * (DataGenerator, LootTableProvider, etc) are not loaded at runtime.
- * This class is only loaded via reflection when the GatherDataEvent fires.
+ * This class is only loaded via reflection so its imports don't get resolved at runtime.
  */
 public class DatagenHandler {
+
+    /**
+     * Called from ModBase via reflection to register the GatherDataEvent listener.
+     * This keeps all GatherDataEvent references out of ModBase's class definition.
+     */
+    public static void registerListener(IEventBus modBus, String modId, List<Class<?>> allClasses) {
+        modBus.addListener((GatherDataEvent event) -> handle(event, modId, allClasses));
+    }
 
     @SuppressWarnings("unchecked")
     public static void handle(GatherDataEvent event, String modId, List<Class<?>> allClasses) {

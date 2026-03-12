@@ -21,7 +21,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 }
 
-// No runs — this is a library, not a mod
+// No runs - this is a library, not a mod
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
@@ -34,7 +34,7 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
-// Disable ForgeGradle run/IDE tasks — lib is not runnable
+// Disable ForgeGradle run/IDE tasks - lib is not runnable
 tasks.configureEach { task ->
     if (task.name.startsWith('run') || task.name.startsWith('prepareRun')
             || task.name.startsWith('genEclipse') || task.name.startsWith('genIntellij') || task.name.startsWith('genVSCode')) {

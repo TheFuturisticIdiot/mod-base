@@ -135,7 +135,7 @@ tasks.named('jar', Jar).configure {
     finalizedBy 'reobfJar'
 }
 
-// JarInJar — use jarJar task as main jar output to embed modbase for production
+// JarInJar - use jarJar task as main jar output to embed modbase for production
 if (!useLocal) {
     tasks.named('jarJar').configure {
         archiveClassifier = ''
