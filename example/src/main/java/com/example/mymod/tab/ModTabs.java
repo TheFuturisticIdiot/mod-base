@@ -11,7 +11,21 @@ public class ModTabs extends TabRegistry {
             .items(
                     ModItems.EXAMPLE_ITEM,
                     ModItems.ANOTHER_ITEM,
-                    ModBlocks.EXAMPLE_BLOCK
+                    ModBlocks.EXAMPLE_BLOCK,
+
+                    ModBlocks.CRATE,
+                    ModBlocks.CRUSHER,
+
+                    ModBlocks.EVIL_PLANKS,
+                    ModBlocks.EVIL_LOG,
+                    ModBlocks.EVIL_SLAB,
+                    ModBlocks.EVIL_STAIRS,
+                    ModBlocks.EVIL_FENCE,
+                    ModBlocks.EVIL_FENCE_GATE,
+                    ModBlocks.EVIL_DOOR,
+                    ModBlocks.EVIL_TRAPDOOR,
+                    ModBlocks.EVIL_PRESSURE_PLATE,
+                    ModBlocks.EVIL_BUTTON
             );
 
     // .icon() accepts an ItemEntry or BlockEntry

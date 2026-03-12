@@ -16,4 +16,13 @@ public class ModItems extends ItemRegistry {
 
     // Custom class:
     // item("custom_item", CustomItem::new)
+
+    // With forge item tag:
+    // item("ruby").tags(Tags.GEMS)
+
+    // With multiple tags:
+    // item("magic_ingot").tags(Tags.INGOTS, Tags.item("magical_materials"))
+
+    // Explicit namespace tag:
+    // item("compat_item").tags(Tags.item("othermod:special_items"))
 }
