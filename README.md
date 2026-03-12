@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    minecraftLibrary 'com.github.TheFuturisticIdiot:mod-base:1.0.0'
+    implementation fg.deobf('com.github.TheFuturisticIdiot:mod-base:1.0.0')
 }
 ```
 

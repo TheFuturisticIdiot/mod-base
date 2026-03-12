@@ -75,7 +75,7 @@ dependencies {
     if (useLocal) {
         implementation project(':lib')
     } else {
-        minecraftLibrary "com.github.TheFuturisticIdiot:mod-base:${modbase_version}"
+        implementation fg.deobf("com.github.TheFuturisticIdiot:mod-base:${modbase_version}")
     }
 }
 
