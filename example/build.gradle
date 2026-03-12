@@ -85,7 +85,8 @@ dependencies {
     }
 }
 
-// Add modbase to Forge's runtime classpath so ModuleClassLoader can find it
+// Unpack modbase jar into a directory so ForgeGradle can load it as a mod via source set.
+// This puts modbase on the MOD layer (ModuleClassLoader) where it can see Forge classes.
 if (!useLocal) {
     configurations {
         modbaseLib {
@@ -96,9 +97,28 @@ if (!useLocal) {
     dependencies {
         modbaseLib fg.deobf("com.github.TheFuturisticIdiot:mod-base:${modbase_version}")
     }
+
+    // Unpack the modbase jar into build/modbase-unpacked
+    tasks.register('unpackModbase', Copy) {
+        from { configurations.modbaseLib.collect { zipTree(it) } }
+        into layout.buildDirectory.dir('modbase-unpacked')
+    }
+    tasks.named('compileJava').configure { dependsOn 'unpackModbase' }
+
+    // Create a source set whose output points at the unpacked directory
+    sourceSets {
+        modbase {
+            output.resourcesDir = layout.buildDirectory.dir('modbase-unpacked')
+            java.srcDirs = [] // no source to compile
+        }
+    }
+
+    // Tell ForgeGradle to load this as the 'modbase' mod in all runs
     minecraft.runs.configureEach {
-        lazyToken('minecraft_classpath') {
-            configurations.modbaseLib.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+        mods {
+            modbase {
+                source sourceSets.modbase
+            }
         }
     }
 }
