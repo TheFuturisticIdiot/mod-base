@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle'
+    id 'maven-publish'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+version = modbase_version
+group = 'net.futuristicidiot.modbase'
+
+base {
+    archivesName = 'modbase'
+}
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+}
+
+// No runs — this is a library, not a mod
+// No reobfJar — published with mapped names so dependents can compile against it in dev
+
+// Disable all ForgeGradle run tasks — lib is not runnable
+tasks.configureEach { task ->
+    if (task.name.startsWith('run') || task.name.startsWith('prepareRun') || task.name.startsWith('gen')) {
+        task.enabled = false
+        task.group = null
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                'Specification-Title'     : 'modbase',
+                'Specification-Vendor'    : 'TheFuturisticIdiot',
+                'Specification-Version'   : '1',
+                'Implementation-Title'    : 'modbase',
+                'Implementation-Version'  : project.jar.archiveVersion,
+                'Implementation-Vendor'   : 'TheFuturisticIdiot',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+            groupId = 'net.futuristicidiot.modbase'
+            artifactId = 'modbase'
+            version = modbase_version
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+sourceSets {
+    test.java.srcDirs = []
+    test.resources.srcDirs = []
+}

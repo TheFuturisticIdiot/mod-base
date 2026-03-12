@@ -1,9 +1,10 @@
 plugins {
-    id 'eclipse'
-    id 'idea'
+    id 'java'
+    id 'net.minecraftforge.gradle'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 version = mod_version
 group = mod_group_id
@@ -12,7 +13,25 @@ base {
     archivesName = mod_id
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+// Local dev vs JitPack dependency
+def localProps = rootProject.file('gradle.local.properties')
+def useLocal = false
+if (localProps.exists()) {
+    def props = new Properties()
+    props.load(localProps.newReader())
+    useLocal = props.getProperty('use_local', 'false').toBoolean()
+}
+
+// Ensure lib is evaluated first when using local source
+if (useLocal) {
+    evaluationDependsOn(':lib')
+}
+
+repositories {
+    if (!useLocal) {
+        maven { url 'https://jitpack.io' }
+    }
+}
 
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
@@ -27,6 +46,9 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
+                    if (useLocal) {
+                        source project(':lib').sourceSets.main
+                    }
                 }
             }
         }
@@ -47,14 +69,17 @@ minecraft {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    if (useLocal) {
+        implementation project(':lib')
+    } else {
+        implementation "com.github.TheFuturisticIdiot:modbase:${modbase_version}"
+    }
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
@@ -84,19 +109,6 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
-}
-
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file://${project.projectDir}/mcmodsrepo"
-        }
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -14,4 +14,10 @@ public class ModMenus extends MenuRegistry {
     // menu("name", MyMenu::new).screen(MyScreen::new)
 
     // The base auto-registers all screens — no client event handler needed.
+    // If a menu has no .screen() set, a GenericScreen is used automatically.
+    // You only need to write a screen class for custom rendering like progress bars.
+
+    // The crate uses GenericScreen (no screen class needed).
+    // The crusher uses a custom CrusherScreen for its progress bar.
+    // See CrusherScreen.java for an example custom screen.
 }
