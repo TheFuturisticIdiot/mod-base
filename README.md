@@ -18,20 +18,20 @@ dependencies {
 
 ## Getting started
 
-Check the `example/` folder for a working mod that uses every feature. You can copy it as a starting point for your own mod — just edit `gradle.properties` and rename the package.
+Check the `example/` folder for a working mod that uses every feature. You can copy it as a starting point for your own mod - just edit `gradle.properties` and rename the package.
 
 ## What it handles
 
-- **Registries** — items, blocks, block entities, menus, sounds, creative tabs, packets
-- **Config** — client and server configs with bool, int, string entries
-- **Networking** — auto-serialised packets, no FriendlyByteBuf needed
-- **Datagen** — item models, block states, recipes, loot tables, lang files (en_us auto-generated)
-- **Block entities** — base class with inventory, capabilities, save/load, client sync, drops
-- **Menus/Screens** — base menu with auto shift-click, slot grid helpers, generic screen fallback
+- **Registries** - items, blocks, block entities, menus, sounds, creative tabs, packets
+- **Config** - client and server configs with bool, int, string entries
+- **Networking** - auto-serialised packets, no FriendlyByteBuf needed
+- **Datagen** - item models, block states, recipes, loot tables, lang files (en_us auto-generated)
+- **Block entities** - base class with inventory, capabilities, save/load, client sync, drops
+- **Menus/Screens** - base menu with auto shift-click, slot grid helpers, generic screen fallback
 
 Your mod class extends `ModBase`, lists your classes in `use()`, and the library handles everything else.
 
 ## Repo structure
 
-- `lib/` — the library source (published to JitPack)
-- `example/` — a working example mod (not published, use as reference or template)
+- `lib/` - the library source (published to JitPack)
+- `example/` - a working example mod (not published, use as reference or template)
