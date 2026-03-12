@@ -56,6 +56,7 @@ public abstract class DatagenBase {
 
         gen.addProvider(event.includeClient(), ItemModelGen.createProvider(gen, modId, fileHelper));
         gen.addProvider(event.includeClient(), BlockStateGen.createProvider(gen, modId, fileHelper));
+        gen.addProvider(event.includeClient(), SoundGen.createProvider(gen, modId, fileHelper));
 
         for (Class<? extends RecipeGen> clazz : recipeClasses) {
             try {

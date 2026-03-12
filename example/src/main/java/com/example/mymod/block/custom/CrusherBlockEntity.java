@@ -2,8 +2,10 @@ package com.example.mymod.block.custom;
 
 import com.example.mymod.screen.CrusherMenu;
 import net.futuristicidiot.modbase.block.BaseBlockEntity;
+import com.example.mymod.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -63,6 +65,7 @@ public class CrusherBlockEntity extends BaseBlockEntity {
             setChanged();
             if (progress >= MAX_PROGRESS) {
                 // Would craft here
+                level.playSound(null, pos, ModSounds.EXAMPLE_SOUND.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
                 progress = 0;
             }
         } else {
