@@ -2,14 +2,14 @@ package net.futuristicidiot.modbase.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class StringEntry extends ConfigEntry<String> {
+public class EnumEntry<E extends Enum<E>> extends ConfigEntry<E> {
 
-    public StringEntry(String name, String defaultValue) {
+    public EnumEntry(String name, E defaultValue) {
         super(name, defaultValue);
     }
 
     @Override
     public void build(ForgeConfigSpec.Builder builder) {
-        configValue = applyComment(builder).define(name, defaultValue);
+        configValue = applyComment(builder).defineEnum(name, defaultValue);
     }
 }

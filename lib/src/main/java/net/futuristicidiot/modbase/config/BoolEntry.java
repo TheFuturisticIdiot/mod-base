@@ -10,6 +10,6 @@ public class BoolEntry extends ConfigEntry<Boolean> {
 
     @Override
     public void build(ForgeConfigSpec.Builder builder) {
-        configValue = builder.define(name, defaultValue);
+        configValue = applyComment(builder).define(name, defaultValue);
     }
 }

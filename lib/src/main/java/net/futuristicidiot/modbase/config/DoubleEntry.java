@@ -2,11 +2,11 @@ package net.futuristicidiot.modbase.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class IntEntry extends ConfigEntry<Integer> {
-    private final int min;
-    private final int max;
+public class DoubleEntry extends ConfigEntry<Double> {
+    private final double min;
+    private final double max;
 
-    public IntEntry(String name, int defaultValue, int min, int max) {
+    public DoubleEntry(String name, double defaultValue, double min, double max) {
         super(name, defaultValue);
         this.min = min;
         this.max = max;

@@ -6,6 +6,7 @@ import net.minecraftforge.fml.config.ModConfig;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 public abstract class ConfigBase {
 
@@ -33,31 +34,31 @@ public abstract class ConfigBase {
         }
     }
 
-    public static abstract class Client extends ConfigBase {
-        protected static BoolEntry bool(String name, boolean defaultValue) {
-            return new BoolEntry(name, defaultValue);
-        }
-
-        protected static IntEntry integer(String name, int defaultValue, int min, int max) {
-            return new IntEntry(name, defaultValue, min, max);
-        }
-
-        protected static StringEntry string(String name, String defaultValue) {
-            return new StringEntry(name, defaultValue);
-        }
+    // Shared factory methods
+    protected static BoolEntry bool(String name, boolean defaultValue) {
+        return new BoolEntry(name, defaultValue);
     }
 
-    public static abstract class Server extends ConfigBase {
-        protected static BoolEntry bool(String name, boolean defaultValue) {
-            return new BoolEntry(name, defaultValue);
-        }
-
-        protected static IntEntry integer(String name, int defaultValue, int min, int max) {
-            return new IntEntry(name, defaultValue, min, max);
-        }
-
-        protected static StringEntry string(String name, String defaultValue) {
-            return new StringEntry(name, defaultValue);
-        }
+    protected static IntEntry integer(String name, int defaultValue, int min, int max) {
+        return new IntEntry(name, defaultValue, min, max);
     }
+
+    protected static StringEntry string(String name, String defaultValue) {
+        return new StringEntry(name, defaultValue);
+    }
+
+    protected static DoubleEntry decimal(String name, double defaultValue, double min, double max) {
+        return new DoubleEntry(name, defaultValue, min, max);
+    }
+
+    protected static <E extends Enum<E>> EnumEntry<E> enumValue(String name, E defaultValue) {
+        return new EnumEntry<>(name, defaultValue);
+    }
+
+    protected static <T> ListEntry<T> list(String name, List<? extends T> defaultValue) {
+        return new ListEntry<>(name, defaultValue);
+    }
+
+    public static abstract class Client extends ConfigBase {}
+    public static abstract class Server extends ConfigBase {}
 }
