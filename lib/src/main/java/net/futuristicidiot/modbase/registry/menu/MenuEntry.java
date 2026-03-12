@@ -18,7 +18,7 @@ public class MenuEntry<T extends AbstractContainerMenu> implements Supplier<Menu
     }
 
     /**
-     * Set a custom screen factory for this menu. Optional — if not set, a generic screen is used.
+     * Set a custom screen factory for this menu. Optional - if not set, a generic screen is used.
      */
     public <S extends Screen & MenuAccess<T>> MenuEntry<T> screen(MenuScreens.ScreenConstructor<T, S> factory) {
         this.screenFactory = factory;

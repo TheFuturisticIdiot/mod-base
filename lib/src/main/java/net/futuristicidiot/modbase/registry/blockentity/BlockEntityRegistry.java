@@ -60,5 +60,6 @@ public abstract class BlockEntityRegistry {
     }
 
     private record PendingBlockEntity<T extends BlockEntity>(
-            String name, BlockEntityEntry<T> entry, BlockEntityFactory<T> factory, BlockEntry[] blocks) {}
+            String name, BlockEntityEntry<T> entry, BlockEntityFactory<T> factory, BlockEntry[] blocks) {
+    }
 }

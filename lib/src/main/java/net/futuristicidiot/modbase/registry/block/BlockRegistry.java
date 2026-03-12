@@ -70,5 +70,6 @@ public abstract class BlockRegistry {
         return PENDING.stream().map(p -> p.name).toList();
     }
 
-    private record PendingBlock(String name, BlockEntry entry, Supplier<? extends Block> supplier, boolean withItem) {}
+    private record PendingBlock(String name, BlockEntry entry, Supplier<? extends Block> supplier, boolean withItem) {
+    }
 }

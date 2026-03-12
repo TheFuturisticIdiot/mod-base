@@ -157,7 +157,8 @@ public abstract class BaseBlockEntity extends BlockEntity implements MenuProvide
     /**
      * Override for server-side tick logic.
      */
-    public void tick(Level level, BlockPos pos, BlockState state) {}
+    public void tick(Level level, BlockPos pos, BlockState state) {
+    }
 
     // --- MenuProvider ---
 

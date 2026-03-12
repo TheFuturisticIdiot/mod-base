@@ -63,21 +63,33 @@ public abstract class BaseMenu<T extends BaseBlockEntity> extends AbstractContai
 
     // --- Player inventory position (override to customise) ---
 
-    protected int getPlayerInvX() { return 8; }
-    protected int getPlayerInvY() { return 84; }
-    protected int getHotbarX() { return 8; }
-    protected int getHotbarY() { return 142; }
+    protected int getPlayerInvX() {
+        return 8;
+    }
+
+    protected int getPlayerInvY() {
+        return 84;
+    }
+
+    protected int getHotbarX() {
+        return 8;
+    }
+
+    protected int getHotbarY() {
+        return 142;
+    }
 
     // --- Slot grid helper ---
 
     /**
      * Creates a grid of SlotDefinitions.
-     * @param type The slot type (INPUT, OUTPUT, OTHER)
+     *
+     * @param type       The slot type (INPUT, OUTPUT, OTHER)
      * @param startIndex First slot index
-     * @param count Total number of slots
-     * @param cols Number of columns
-     * @param x X position of top-left slot
-     * @param y Y position of top-left slot
+     * @param count      Total number of slots
+     * @param cols       Number of columns
+     * @param x          X position of top-left slot
+     * @param y          Y position of top-left slot
      */
     protected static List<SlotDefinition> slotGrid(SlotType type, int startIndex, int count, int cols, int x, int y) {
         List<SlotDefinition> slots = new ArrayList<>();

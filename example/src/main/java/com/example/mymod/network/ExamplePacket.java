@@ -7,7 +7,8 @@ public class ExamplePacket extends BasePacket {
     String message;
 
     // No-arg constructor required for deserialisation
-    public ExamplePacket() {}
+    public ExamplePacket() {
+    }
 
     public ExamplePacket(int value, String message) {
         this.value = value;

@@ -3,7 +3,6 @@ package com.example.mymod.block;
 import com.example.mymod.block.custom.CrateBlock;
 import com.example.mymod.block.custom.CrusherBlock;
 import net.futuristicidiot.modbase.registry.block.BlockEntry;
-import net.futuristicidiot.modbase.registry.block.BlockProps;
 import net.futuristicidiot.modbase.registry.block.BlockRegistry;
 
 public class ModBlocks extends BlockRegistry {

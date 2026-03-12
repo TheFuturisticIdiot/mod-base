@@ -21,10 +21,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 }
 
-// No runs — this is a library, not a mod
-// No reobfJar — published with mapped names so dependents can compile against it in dev
+// No runs - this is a library, not a mod
+// No reobfJar - published with mapped names so dependents can compile against it in dev
 
-// Disable ForgeGradle run/IDE tasks — lib is not runnable
+// Disable ForgeGradle run/IDE tasks - lib is not runnable
 tasks.configureEach { task ->
     if (task.name.startsWith('run') || task.name.startsWith('prepareRun')
             || task.name.startsWith('genEclipse') || task.name.startsWith('genIntellij') || task.name.startsWith('genVSCode')) {

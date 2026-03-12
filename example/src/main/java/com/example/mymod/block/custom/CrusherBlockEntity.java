@@ -36,7 +36,9 @@ public class CrusherBlockEntity extends BaseBlockEntity {
         }
 
         @Override
-        public int getCount() { return 2; }
+        public int getCount() {
+            return 2;
+        }
     };
 
     public CrusherBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -54,7 +56,7 @@ public class CrusherBlockEntity extends BaseBlockEntity {
 
     @Override
     public void tick(Level level, BlockPos pos, BlockState state) {
-        // Placeholder tick logic — a real mod would check recipes here
+        // Placeholder tick logic - a real mod would check recipes here
         if (!itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()
                 && itemHandler.getStackInSlot(OUTPUT_SLOT).isEmpty()) {
             progress++;

@@ -45,5 +45,6 @@ public abstract class ItemRegistry {
         return PENDING.stream().map(p -> p.name).toList();
     }
 
-    private record PendingItem(String name, ItemEntry entry, Supplier<? extends Item> supplier) {}
+    private record PendingItem(String name, ItemEntry entry, Supplier<? extends Item> supplier) {
+    }
 }

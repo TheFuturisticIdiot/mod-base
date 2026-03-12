@@ -32,7 +32,7 @@ public abstract class ItemModelGen {
                         case "handheld" -> parent = ResourceLocation.withDefaultNamespace("item/handheld");
                         default -> parent = ResourceLocation.withDefaultNamespace("item/generated");
                     }
-                    withExistingParent(entry.getName(),  parent)
+                    withExistingParent(entry.getName(), parent)
                             .texture("layer0", ResourceLocation.fromNamespaceAndPath(modId, "item/" + entry.getName()));
                 }
             }

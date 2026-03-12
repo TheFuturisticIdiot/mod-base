@@ -36,7 +36,8 @@ public abstract class BaseScreen<T extends BaseMenu<?>> extends AbstractContaine
     /**
      * Override to draw progress bars, arrows, or other dynamic elements.
      */
-    protected void renderProgress(GuiGraphics graphics, int x, int y) {}
+    protected void renderProgress(GuiGraphics graphics, int x, int y) {
+    }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {

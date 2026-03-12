@@ -69,5 +69,6 @@ public abstract class MenuRegistry {
     }
 
     private record PendingMenu<T extends AbstractContainerMenu>(
-            String name, MenuEntry<T> entry, IContainerFactory<T> factory) {}
+            String name, MenuEntry<T> entry, IContainerFactory<T> factory) {
+    }
 }

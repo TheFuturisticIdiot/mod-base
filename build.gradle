@@ -1,4 +1,4 @@
-// Root project — generates downloadable template zip from example subproject
+// Root project - generates downloadable template zip from example subproject
 
 def templateStaging = project.layout.buildDirectory.dir('template-staging').get().asFile
 def templateOut = project.layout.buildDirectory.dir('template').get().asFile
@@ -35,7 +35,7 @@ plugins {
 }
 """
 
-        // .gitignore — stored as _gitignore to avoid dotfile exclusion, renamed in zip
+        // .gitignore - stored as _gitignore to avoid dotfile exclusion, renamed in zip
         def gitignore = new File(templateStaging, '_gitignore')
         gitignore.text = """\
 # Gradle
