@@ -4,7 +4,9 @@ import com.mojang.logging.LogUtils;
 import net.futuristicidiot.modbase.config.ConfigBase;
 import net.futuristicidiot.modbase.datagen.*;
 import net.futuristicidiot.modbase.registry.block.BlockRegistry;
+import net.futuristicidiot.modbase.registry.blockentity.BlockEntityRegistry;
 import net.futuristicidiot.modbase.registry.item.ItemRegistry;
+import net.futuristicidiot.modbase.registry.menu.MenuRegistry;
 import net.futuristicidiot.modbase.registry.packet.PacketRegistry;
 import net.futuristicidiot.modbase.registry.sound.SoundRegistry;
 import net.futuristicidiot.modbase.registry.tab.TabRegistry;
@@ -42,6 +44,8 @@ public abstract class ModBase {
 
         ItemRegistry.init(modId, modBus);
         BlockRegistry.init(modId, modBus);
+        BlockEntityRegistry.init(modId, modBus);
+        MenuRegistry.init(modId, modBus);
         SoundRegistry.init(modId, modBus);
         TabRegistry.init(modId, modBus);
         PacketRegistry.init(modId, modBus);

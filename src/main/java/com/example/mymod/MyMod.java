@@ -1,11 +1,13 @@
 package com.example.mymod;
 
+import com.example.mymod.block.ModBlockEntities;
 import com.example.mymod.block.ModBlocks;
 import com.example.mymod.config.ModClientConfig;
 import com.example.mymod.config.ModServerConfig;
 import com.example.mymod.datagen.*;
 import com.example.mymod.item.ModItems;
 import com.example.mymod.network.ModPackets;
+import com.example.mymod.screen.ModMenus;
 import com.example.mymod.sound.ModSounds;
 import com.example.mymod.tab.ModTabs;
 import net.futuristicidiot.modbase.ModBase;
@@ -25,6 +27,8 @@ public class MyMod extends ModBase {
         use(
                 ModItems.class,
                 ModBlocks.class,
+                ModBlockEntities.class,
+                ModMenus.class,
                 ModSounds.class,
                 ModTabs.class,
                 ModPackets.class,
