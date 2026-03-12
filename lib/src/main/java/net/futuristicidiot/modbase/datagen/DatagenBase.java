@@ -58,6 +58,11 @@ public abstract class DatagenBase {
         gen.addProvider(event.includeClient(), BlockStateGen.createProvider(gen, modId, fileHelper));
         gen.addProvider(event.includeClient(), SoundGen.createProvider(gen, modId, fileHelper));
 
+        // Block + item tags
+        var blockTagsProvider = TagGen.createBlockTagProvider(gen, modId, event.getLookupProvider(), fileHelper);
+        gen.addProvider(event.includeServer(), blockTagsProvider);
+        gen.addProvider(event.includeServer(), TagGen.createItemTagProvider(gen, modId, event.getLookupProvider(), blockTagsProvider, fileHelper));
+
         for (Class<? extends RecipeGen> clazz : recipeClasses) {
             try {
                 clazz.getDeclaredConstructor().newInstance();

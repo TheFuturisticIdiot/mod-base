@@ -35,6 +35,18 @@ public class LootGen {
             add(block.get(), createSingleItemTableWithSilkTouch(block.get(), block.get().asItem()));
         }
 
+        /** Slab drop - drops 2 when double slab. */
+        protected void dropsSlab(BlockEntry block) {
+            knownBlocks.add(block.get());
+            add(block.get(), createSlabItemTable(block.get()));
+        }
+
+        /** Door drop - drops 1 item from a 2-block-tall door. */
+        protected void dropsDoor(BlockEntry block) {
+            knownBlocks.add(block.get());
+            add(block.get(), createDoorTable(block.get()));
+        }
+
         @Override
         protected abstract void generate();
 
