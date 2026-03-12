@@ -46,7 +46,9 @@ minecraft {
             mods {
                 "${mod_id}" {
                     source sourceSets.main
-                    if (useLocal) {
+                }
+                if (useLocal) {
+                    modbase {
                         source project(':lib').sourceSets.main
                     }
                 }
@@ -75,7 +77,11 @@ dependencies {
     if (useLocal) {
         implementation project(':lib')
     } else {
-        implementation fg.deobf("com.github.TheFuturisticIdiot:mod-base:${modbase_version}")
+        def modbaseDep = "com.github.TheFuturisticIdiot:mod-base:${modbase_version}"
+        implementation fg.deobf(modbaseDep)
+        jarJar(modbaseDep) {
+            jarJar.ranged(it, "[${modbase_version},)")
+        }
     }
 }
 
@@ -109,6 +115,14 @@ tasks.named('jar', Jar).configure {
         ])
     }
     finalizedBy 'reobfJar'
+}
+
+// JarInJar — use jarJar task as main jar output to embed modbase for production
+if (!useLocal) {
+    tasks.named('jarJar').configure {
+        archiveClassifier = ''
+        finalizedBy 'reobfJar'
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {

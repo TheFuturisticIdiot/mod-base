@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "modbase"
+version = "${modbase_version}"
+displayName = "ModBase"
+authors = "TheFuturisticIdiot"
+description = '''A base library for Forge 1.20.1 mod development.'''
+
+[[dependencies.modbase]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.modbase]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "BOTH"

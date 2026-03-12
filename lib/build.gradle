@@ -23,6 +23,17 @@ dependencies {
 
 // No runs — this is a library, not a mod
 
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            modbase_version: modbase_version,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties
+    }
+}
+
 // Disable ForgeGradle run/IDE tasks — lib is not runnable
 tasks.configureEach { task ->
     if (task.name.startsWith('run') || task.name.startsWith('prepareRun')
