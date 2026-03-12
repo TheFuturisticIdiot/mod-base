@@ -85,34 +85,21 @@ dependencies {
     }
 }
 
-// Copy modbase jar to run directories so Forge's mod discovery finds it during dev runs
+// Add modbase to Forge's runtime classpath so ModuleClassLoader can find it
 if (!useLocal) {
     configurations {
-        modbaseJar {
+        modbaseLib {
             canBeConsumed = false
             canBeResolved = true
         }
     }
     dependencies {
-        modbaseJar fg.deobf("com.github.TheFuturisticIdiot:mod-base:${modbase_version}")
+        modbaseLib fg.deobf("com.github.TheFuturisticIdiot:mod-base:${modbase_version}")
     }
-    tasks.register('copyModbaseToRun') {
-        dependsOn configurations.modbaseJar
-        doLast {
-            ['run/mods', 'run-data/mods', 'run-server/mods'].each { dir ->
-                def target = file(dir)
-                target.mkdirs()
-                // Clean old modbase jars
-                target.listFiles()?.findAll { it.name.startsWith('modbase-') }?.each { it.delete() }
-                copy {
-                    from configurations.modbaseJar
-                    into target
-                }
-            }
+    minecraft.runs.configureEach {
+        lazyToken('minecraft_classpath') {
+            configurations.modbaseLib.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
         }
-    }
-    tasks.matching { it.name.startsWith('prepareRun') }.configureEach {
-        dependsOn 'copyModbaseToRun'
     }
 }
 
