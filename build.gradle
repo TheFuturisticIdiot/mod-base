@@ -73,7 +73,7 @@ tasks.register('packageTemplate', Zip) {
     description = 'Packages the example subproject as a standalone downloadable template'
     dependsOn 'prepareTemplate'
 
-    archiveFileName = "modbase-template-${modbase_version}.zip"
+    archiveFileName = "mod-base-template-${modbase_version}.zip"
     destinationDirectory = templateOut
 
     from('example/src') { into 'src' }
