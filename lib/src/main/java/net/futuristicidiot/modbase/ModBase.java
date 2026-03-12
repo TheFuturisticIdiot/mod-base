@@ -21,7 +21,6 @@ public abstract class ModBase {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static String modId;
     private final List<Class<?>> configClasses = new ArrayList<>();
-    private final List<Class<?>> datagenClasses = new ArrayList<>();
 
     public ModBase() {
         modId = getModId();
@@ -45,30 +44,6 @@ public abstract class ModBase {
             LOGGER.info("[ModBase] Registered config: {}", configClass.getSimpleName());
         }
 
-        // Only load datagen classes if MC's DataProvider is available on this classpath.
-        // On minecraft_classpath (template dev), datagen MC classes aren't visible,
-        // so we skip entirely - datagen only runs via runData which has full MC classes.
-        boolean datagenAvailable = false;
-        try {
-            Class.forName("net.minecraft.data.DataProvider", false, getClass().getClassLoader());
-            datagenAvailable = true;
-        } catch (ClassNotFoundException ignored) {
-            LOGGER.debug("[ModBase] Datagen classes not available on this classpath, skipping datagen registration");
-        }
-
-        if (datagenAvailable) {
-            datagen();
-            final String id = modId;
-            final List<Class<?>> classes = new ArrayList<>(datagenClasses);
-            try {
-                Class<?> handler = Class.forName("net.futuristicidiot.modbase.internal.DatagenHandler");
-                handler.getMethod("registerListener", IEventBus.class, String.class, List.class)
-                        .invoke(null, modBus, id, classes);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to register datagen handler", e);
-            }
-        }
-
         MinecraftForge.EVENT_BUS.register(this);
         LOGGER.info("[ModBase] Init complete for: {}", modId);
     }
@@ -76,9 +51,6 @@ public abstract class ModBase {
     protected abstract String getModId();
 
     protected abstract void register();
-
-    protected void datagen() {
-    }
 
     protected void use(Class<?>... classes) {
         for (Class<?> clazz : classes) {
@@ -90,7 +62,6 @@ public abstract class ModBase {
             if (ConfigBase.class.isAssignableFrom(clazz)) {
                 configClasses.add(clazz);
             }
-            datagenClasses.add(clazz);
             LOGGER.info("[ModBase] Loaded: {}", clazz.getSimpleName());
         }
     }

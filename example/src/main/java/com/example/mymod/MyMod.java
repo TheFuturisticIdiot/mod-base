@@ -4,7 +4,6 @@ import com.example.mymod.block.ModBlockEntities;
 import com.example.mymod.block.ModBlocks;
 import com.example.mymod.config.ModClientConfig;
 import com.example.mymod.config.ModServerConfig;
-import com.example.mymod.datagen.*;
 import com.example.mymod.item.ModItems;
 import com.example.mymod.network.ModPackets;
 import com.example.mymod.screen.ModMenus;
@@ -34,17 +33,6 @@ public class MyMod extends ModBase {
                 ModPackets.class,
                 ModClientConfig.class,
                 ModServerConfig.class
-        );
-    }
-
-    @Override
-    protected void datagen() {
-        use(
-                ModItemModels.class,
-                ModBlockStates.class,
-                ModRecipes.class,
-                ModBlockLoot.class,
-                ModLang.class
         );
     }
 }

@@ -1,6 +1,6 @@
-package net.futuristicidiot.modbase.internal;
+package net.futuristicidiot.modbase.datagen;
 
-import net.futuristicidiot.modbase.datagen.*;
+import net.futuristicidiot.modbase.ModBase;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -8,29 +8,33 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 
-import net.minecraftforge.eventbus.api.IEventBus;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Handles datagen in a separate class so that datagen-only classes
- * (DataGenerator, LootTableProvider, etc) are not loaded at runtime.
- * This class is only loaded via reflection so its imports don't get resolved at runtime.
+ * Base class for datagen registration. User creates a subclass annotated with
+ * {@code @Mod.EventBusSubscriber(modid = "yourmod", bus = Mod.EventBusSubscriber.Bus.MOD)},
+ * lists datagen classes in the constructor via use(), and adds a standard
+ * {@code @SubscribeEvent} method that calls run().
  */
-public class DatagenHandler {
+public abstract class DatagenBase {
+    private final List<Class<?>> classes = new ArrayList<>();
 
-    /**
-     * Called from ModBase via reflection to register the GatherDataEvent listener.
-     * This keeps all GatherDataEvent references out of ModBase's class definition.
-     */
-    public static void registerListener(IEventBus modBus, String modId, List<Class<?>> allClasses) {
-        modBus.addListener((GatherDataEvent event) -> handle(event, modId, allClasses));
+    protected void use(Class<?>... classes) {
+        for (Class<?> clazz : classes) {
+            try {
+                Class.forName(clazz.getName(), true, clazz.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Failed to load datagen class: " + clazz.getSimpleName(), e);
+            }
+            this.classes.add(clazz);
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public static void handle(GatherDataEvent event, String modId, List<Class<?>> allClasses) {
+    protected void run(GatherDataEvent event) {
+        String modId = ModBase.id();
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
@@ -38,7 +42,7 @@ public class DatagenHandler {
         List<Class<? extends LootGen.BlockLoot>> blockLootClasses = new ArrayList<>();
         List<Class<? extends LangGen>> langClasses = new ArrayList<>();
 
-        for (Class<?> clazz : allClasses) {
+        for (Class<?> clazz : classes) {
             if (RecipeGen.class.isAssignableFrom(clazz)) {
                 recipeClasses.add((Class<? extends RecipeGen>) clazz);
             }
@@ -53,7 +57,6 @@ public class DatagenHandler {
         gen.addProvider(event.includeClient(), ItemModelGen.createProvider(gen, modId, fileHelper));
         gen.addProvider(event.includeClient(), BlockStateGen.createProvider(gen, modId, fileHelper));
 
-        // Instantiate recipe classes
         for (Class<? extends RecipeGen> clazz : recipeClasses) {
             try {
                 clazz.getDeclaredConstructor().newInstance();
@@ -63,7 +66,6 @@ public class DatagenHandler {
         }
         gen.addProvider(event.includeServer(), RecipeGen.createProvider(gen, modId));
 
-        // Block loot
         for (Class<? extends LootGen.BlockLoot> clazz : blockLootClasses) {
             gen.addProvider(event.includeServer(), new LootTableProvider(gen.getPackOutput(),
                     Collections.emptySet(),
@@ -76,7 +78,6 @@ public class DatagenHandler {
                     }, LootContextParamSets.BLOCK))));
         }
 
-        // Instantiate lang classes so their constructors queue overrides
         for (Class<? extends LangGen> clazz : langClasses) {
             try {
                 clazz.getDeclaredConstructor().newInstance();
@@ -85,7 +86,6 @@ public class DatagenHandler {
             }
         }
 
-        // Create lang providers (en_us auto-generated + any other locales)
         for (LanguageProvider provider : LangGen.createProviders(gen, modId)) {
             gen.addProvider(event.includeClient(), provider);
         }
